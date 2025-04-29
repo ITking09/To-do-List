@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do Liste</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <style>
+        body{
+            font-family: "Open Sans", serif;
+        }
+        button{
+            background-color: blue;
+            color: white;
+            padding: 4px 8px;
+            border: 0;
+            border-radius: 8px;
+        }
+        box{
+         background-color: rgb(242, 15, 15); 
+         color: rgb(0, 0, 0); 
+         padding: 0px 2px; 
+         border: 0;
+         border-radius: 100px;
+        }
+        
+        input{
+            border: 1px solid grey;
+        }
+
+        ::placeholder{
+            color: gray;
+        }
+
+        ul{
+            padding: 0;
+            list-style-type: none;
+            word-spacing: 10px;
+            line-height: 2;
+            
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Meine To-do Liste</h1>
+    <input id="todoField" type="text" placeholder="Bitte eingeben..."> 
+    <button onclick="addTodo()">Speichern</button>
+
+    <ul id="todoList"> 
+    
+    </ul>
+
+    <script>
+        window.onload = function () {
+          const gespeicherteListe = localStorage.getItem("todos");
+          if (gespeicherteListe) {
+            document.getElementById("todoList").innerHTML = gespeicherteListe;
+            setzeLoeschEvents();
+          }
+        };
+    
+        function addTodo() {
+          const text = document.getElementById("todoField").value.trim();
+          if (!text) return;
+    
+          const li = document.createElement("li");
+          li.innerHTML = '<input type="checkbox"> ' + text +
+            ' <span class="delete-btn" onclick="loescheTodo(this)">&#10005;</span>';
+
+    
+          document.getElementById("todoList").appendChild(li);
+          document.getElementById("todoField").value = "";
+    
+          speichereListe();
+        }
+    
+        function loescheTodo(box) {
+          box.parentElement.remove();
+          speichereListe();
+        }
+    
+        function speichereListe() {
+          const inhalt = document.getElementById("todoList").innerHTML;
+          localStorage.setItem("todos", inhalt);
+        }
+    
+        function setzeLoeschEvents() {
+          const buttons = document.querySelectorAll("#todoList button");
+          buttons.forEach(btn => {
+            btn.onclick = function () {
+              loescheTodo(btn);
+            };
+          });
+        }
+      </script>
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
